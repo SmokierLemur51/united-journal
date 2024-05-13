@@ -1,0 +1,208 @@
+import datetime
+
+from sqlalchemy import Boolean, DateTime, Float, ForeignKey, Integer, String
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+from sqlalchemy.sql import func
+
+from flask_sqlalchemy import SQLAlchemy
+
+class Base(DeclarativeBase):
+    pass
+
+db = SQLAlchemy(model_class=Base)
+
+
+class CustomerContact(Base):
+    """ Customer contacts """
+    __tablename__ = "contacts"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(120))
+    email: Mapped[str] = mapped_column(String(120), unique=True)
+    phone: Mapped[str] = mapped_column(String(10), unique=True)
+
+    def __repr__(self) -> str:
+        return "{}".format(self.name)
+
+
+
+class ContractorContact(Base):
+    """ Subcontractor contacts """
+    __tablename__ = "subcontractor_contacts"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(120))
+    email: Mapped[str] = mapped_column(String(120), unique=True)
+    phone: Mapped[str] = mapped_column(String(10), unique=True)
+
+    def __repr__(self) -> str:
+        return "{}".format(self.name)
+
+
+
+class EmployeeContact(Base):
+    """ Employee contacts only. """
+    __tablename__ = "employee_contacts"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(120))
+    email: Mapped[str] = mapped_column(String(120), unique=True)
+    phone: Mapped[str] = mapped_column(String(10), unique=True)
+
+    def __repr__(self) -> str:
+        return "{}".format(self.name)
+    
+
+
+class StatusCode(Base):
+    """ Miscellaneous status codes """
+    __tablename__ = "status_codes"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    definition: Mapped[str] = mapped_column(String(120), unique=True)
+    description: Mapped[str] = mapped_column(String(255))
+
+    def __repr__(self) -> str:
+        return "{}".fomat(self.definition)
+
+    
+
+class Address(Base):
+    """ Addresses for jobs """
+    __tablename__ = "addresses"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    created_at: Mapped[datetime.datetime] = mapped_column(DateTime, default=func.now())
+    street: Mapped[str] = mapped_column(String(120))
+    steet_2: Mapped[str] = mapped_column(String(120), nullable=True)
+    city: Mapped[str] = mapped_column(String(60))
+    state: Mapped[str] = mapped_column(String(2)) # add options
+    zip_code: Mapped[str] = mapped_column(String(10))
+
+
+    def __repr__(self) -> str:
+        return "{}".format(self.street)
+        
+
+
+class ContactRequest(Base):
+    """ Contact request forms """
+    __tablename__ = "contact_requests"
+    
+    id: Mapped[int] = mapped_column(primary_key=True)
+    created_at: Mapped[datetime.datetime] = mapped_column(DateTime, default=func.now())
+    contacted: Mapped[bool] = mapped_column(Boolean, default=False)
+    converted: Mapped[bool] = mapped_column(Boolean, default=False)
+    name: Mapped[str] = mapped_column(String(120), nullable=False)
+    phone: Mapped[str] = mapped_column(String(10), nullable=False)
+    email: Mapped[str] = mapped_column(String(120), nullable=True)
+    message: Mapped[str] = mapped_column(String(500), nullable=True)
+
+
+    def __repr__(self) -> str:
+        return "{}'s contact request.".format(self.name)
+
+
+    def check_not_duplicate(self) -> bool:
+        return True
+
+    def create_note(): # -> Note
+        pass    
+
+
+
+class ContactRequestNote(Base): 
+    """ Notes for something I learned """ 
+    __tablename__ = "notes"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    contact_form_id: Mapped[int] = mapped_column(ForeignKey('contact_requests.id'))
+    title: Mapped[str] = mapped_column(String(200), nullable=False)
+    content: Mapped[str] = mapped_column(String(500), nullable=True)
+
+    def __repr__(self) -> str:
+        return "{} <ContactRequest-{}>".format(self.title, self.contact_form_id)
+
+
+
+class EstimateRequest(Base):
+    """ Customer estimate requests """
+    __tablename__ = "estimate_requests"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    created_at: Mapped[datetime.datetime] = mapped_column(DateTime, default=func.now())
+    contacted: Mapped[bool] = mapped_column(Boolean, default=False)
+    converted: Mapped[bool] = mapped_column(Boolean, default=False)
+    name: Mapped[str] = mapped_column(String(120), nullable=False)
+    phone: Mapped[str] = mapped_column(String(10), nullable=False)
+    email: Mapped[str] = mapped_column(String(120), nullable=True)
+    message: Mapped[str] = mapped_column(String(500), nullable=True)
+
+    def __repr__(self) -> str:
+        return "{}'s estimate request.".format(self.name)
+
+
+
+class EstimateRequestNote(Base):
+    """ Greenleaf notes on estimate requests. """
+    __tablename__ = "estimate_request_notes"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    estimate_request_id: Mapped[int] = mapped_column(ForeignKey('estimate_requests.id'))
+    title: Mapped[str] = mapped_column(String(120))
+    content: Mapped[str] = mapped_column(String(255))
+
+    def __repr__(self) -> str:
+        return "{} <EstimateRequest-{}>".format(self.title, self.estimate_request_id)
+
+
+class ServiceCategory(Base):
+    """ Categories for services """
+    __tablename__ = "service_categories"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    category: Mapped[str] = mapped_column(String(100), unique=True)
+    description: Mapped[str] = mapped_column(String(255), nullable=True)
+    """ The description can be null because the title in some cases will be sufficient """
+
+    services: Mapped[list["Service"]] = relationship(back_populates="category")
+
+    def __repr__(self) -> str:
+        return "{}".format(self.category)
+
+
+class SubContractor(Base):
+    """ Subcontractors that will do jobs for me. """
+    __tablename__ = "sub_contractors"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    # contact_id: Mapped[int] mapped_column()
+    contractor: Mapped[str] = mapped_column(String(100))
+    # contact_id: Mapped[int] = mapped_column(ForeignKey('subcontractor'))
+
+    def __repr__(self) -> str:
+        return "{}".format(self.contractor)
+
+
+
+class Service(Base):
+    """ Services we or our subcontractors offer """
+    __tablename__ = "services"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    category_id: Mapped[int] = mapped_column(ForeignKey('service_categories.id'))
+    service: Mapped[str] = mapped_column(String(120), unique=True)
+    public_description: Mapped[str] = mapped_column(String(260))
+    cafe_description: Mapped[str] = mapped_column(String(260))
+    selling: Mapped[float] = mapped_column(Float, default=0.0) 
+
+    category: Mapped["ServiceCategory"] = relationship(back_populates="services")
+
+    def __repr__(self) -> str:
+        return "{}".format(self.service)
+
+    def check_selling_not_zero(self) -> bool:
+        if self.selling > 0.0:
+            return True
+        return False
+
+
+class Booking(Base):
+    """ Customer bookings """
+    __tablename__ = "bookings"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    
+    
+    def __repr__(self) -> str:
+        return "{}".format()
