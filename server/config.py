@@ -7,12 +7,15 @@ class Config(object):
     TESTING = False
     CSRF_ENABLED = True
     SECRET_KEY = 'this-really-needs-to-be-changed'
+    """
     SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://{}:{}@{}:5432/{}".format(
             os.environ["DB_USERNAME"],
             os.environ['DB_PASSWORD'],
             os.environ['DB_HOST'],
             os.environ['DATABASE_NAME'],
         )
+    """
+    SQLALCHEMY_DATABASE_URI="sqlite:///{}.db".format(os.environ['SQLITE_DB_FILE'])
 
 
 class ProductionConfig(Config):

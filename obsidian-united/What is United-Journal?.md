@@ -1,0 +1,4 @@
+
+I work for a company that deals in selling building products to contractors. I feel like the company has a capacity to be a top tier in the entire country, but we do not have the tools we need to thrive. 
+
+United-Journal will, in the end vision, be a collection of micro-services that will be tailored to providing the highest level of customer satisfaction with the highest quality software I can develop. It is a CRM service for *efficiently* keying orders, maintaining customer relationships (which are so valuable to the issue they are trying to address), and providing the proper analytics to effectively plan for the future.  
