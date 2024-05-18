@@ -18,8 +18,21 @@
                 "source": false
               }
             }
+          },
+          {
+            "id": "52a390291dec83f8",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "feature_planning/warehouse.md",
+                "mode": "source",
+                "source": false
+              }
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -85,7 +98,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "versions/version 0.0.1 - flask-alpha.md",
+                "file": "feature_planning/warehouse.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +115,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "versions/version 0.0.1 - flask-alpha.md",
+                "file": "feature_planning/warehouse.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +138,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "versions/version 0.0.1 - flask-alpha.md"
+                "file": "feature_planning/warehouse.md"
               }
             }
           }
@@ -146,11 +159,13 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "c352284ee4ae0fa6",
+  "active": "52a390291dec83f8",
   "lastOpenFiles": [
+    "versions/version 0.0.1 - flask-alpha.md",
+    "feature_planning/warehouse.md",
+    "feature_planning",
     "What is United-Journal?.md",
     "__README__.md",
-    "versions/version 0.0.1 - flask-alpha.md",
     "versions"
   ]
 }

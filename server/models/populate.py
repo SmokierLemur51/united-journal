@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from .models import Vendor, ProductCategory, Product
 
 vendor_list = [
+    Vendor(vendor="Dan's PVC Products", street=""),
     Vendor(vendor="Darrin Lee's Tools", street="6118 Jackson Fields Dr",
         city="Charlestown", state="IN", zip='47111'),
     Vendor(vendor="Amy's Advanced Aluminum", street='1001 Logan St', 
@@ -37,6 +38,16 @@ product_category_list = [
         info="{} composite siding, sub categories for accessory and types of material.".format(parent)),
     ProductCategory(category="Decking", 
         info="{} for decking. Sub categories for accessories, clips, planks etc.".format(parent)),
-    
+    ProductCategory(category="Metal Siding", 
+        info="{} for metal siding and accessories.".format(parent)),    
+]
 
+def populate_categories(db: SQLAlchemy, categories: list[ProductCategory]) -> None:
+    with current_app.app_context():
+        db.session.add_all(categories)
+        db.session.commit()
+
+
+sub_category_list = [
+    
 ]
