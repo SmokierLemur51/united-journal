@@ -61,11 +61,12 @@ class ProductSubCategory(Base):
     info: Mapped[str] = mapped_column(String(500), nullable=True)
     
     # relationships
-    parent_category: Mapped["ProductCategory"] = relationships(back_populates="sub_categories")
+    parent_category: Mapped["ProductCategory"] = relationship(back_populates="sub_categories")
 
 
     def __repr__(self) -> str:
-        return "Sub Category: <{}>, Parent Category: <{}>".format(self.sub_category, self.parent_category.category)
+        return "Sub Category: <{}>, Parent Category: <{}>".format(
+            self.sub_category, self.parent_category.category)
 
 
 

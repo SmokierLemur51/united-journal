@@ -1,12 +1,14 @@
+from flask import current_app
 from flask_sqlalchemy import SQLAlchemy
 
 from .models import Vendor, ProductCategory, Product
 
-populate_vendors(db: SQLAlchemy) -> None:
+def populate_vendors(db: SQLAlchemy) -> None:
     # originally the vendors were outside of the func, but it makes it
     # so much easier to not have to import the list and then also pass it as a param 
     vendor_list = [
-        Vendor(vendor="Dan's PVC Products", street=""),
+        Vendor(vendor="Dan's PVC Products", street="1293 Bardstown Rd, Louisville",
+            city='Louisville', state='KY', zip="40204"),
         Vendor(vendor="Darrin Lee's Tools", street="6118 Jackson Fields Dr",
             city="Charlestown", state="IN", zip='47111'),
         Vendor(vendor="Amy's Advanced Aluminum", street='1001 Logan St', 
@@ -24,7 +26,7 @@ populate_vendors(db: SQLAlchemy) -> None:
     ]
     # add list to session and commit to database
     with current_app.app_context():
-        db.session.add_all(vendors)
+        db.session.add_all(vendor_list)
         db.session.commit()
 
 
@@ -49,12 +51,12 @@ def populate_categories(db: SQLAlchemy) -> None:
     ]
     # add to session and commit changes
     with current_app.app_context():
-        db.session.add_all(categories)
+        db.session.add_all(product_category_list)
         db.session.commit()
 
 
 def populate_sub_categories(db: SQLAlchemy):
-    categories = db.session.scalars(db.select(ProductCategories)).all() 
-    sub_category_list = [
-          
+    categories = db.session.scalars(db.select(ProductCategories)).all()
+    sub_categories = [
+        
     ]
