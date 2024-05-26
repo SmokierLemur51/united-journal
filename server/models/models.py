@@ -77,8 +77,12 @@ class Product(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     product: Mapped[str] = mapped_column(String(80))
     created_at: Mapped[datetime.datetime] = mapped_column(DateTime, default=func.now())
+    updated_at: Mapped[datetime.datetime] = mapped_column(DateTime, default=func.now())    
+    deleted_at: Mapped[datetime.datetime] = mapped_column(DateTime, nullable=True)
     category_id: Mapped[int] = mapped_column(ForeignKey('product_categories.id'))
+    sub_category_id: Mapped[int] = mapped_column(ForeignKey('product_sub_categories.id'))    
     vendor_id: Mapped[int] = mapped_column(ForeignKey('vendors.id'))
+    product: Mapped[str] = mapped_column(String(120), unique=True)
     cost: Mapped[float] = mapped_column(Float, nullable=False, default=0.0)
     selling: Mapped[float] = mapped_column(Float, nullable=False, default=0.0)
     # need to add sizing dimensions
@@ -89,3 +93,11 @@ class Product(Base):
     
 
 
+class Order(Base):
+    __tablename__ = "orders"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    created_at: Mapped[datetime.datetime] = mapped_column(DateTime, default=func.now())
+    updated_at: Mapped[datetime.datetime] = mapped_column(DateTime, default=func.now())    
+    deleted_at: Mapped[datetime.datetime] = mapped_column(DateTime, nullable=True)
+    
