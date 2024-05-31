@@ -13,21 +13,36 @@
                     <a class="nav-link active" aria-current="page" href="{{ url_for('sales.home') }}">Home</a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="/reports">Orders</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Orders
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="{{ url_for('orders.create') }}">New Order</a></li>
+                      <li><a class="dropdown-item" href="{{ url_for('orders.index') }}">Order Inquiry</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item" href="#">Order Templates</a></li>
+                      <li><a class="dropdown-item" href="#">Customer Templates</a></li>
+                    </ul>
                 </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="/about">Purchase-Orders</a>
+                
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Purchasing
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="{{ url_for('purchasing.index') }}">Purchasing</a></li>
+                      <li><a class="dropdown-item" href="{{ url_for('purchasing.purchase_orders') }}">Purchase Orders</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item" href="{{ url_for('purchasing.vendors') }}">Vendors</a></li>
+                      <li><a class="dropdown-item" href="#">Explore Stock</a></li>
+                    </ul>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="/contact">Customers</a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="{{ url_for('sales.vendors') }}">Vendors</a>
-                </li>
 
             </ul>
             <form class="d-flex" role="search">
@@ -37,6 +52,8 @@
         </div>
     </div>
 </nav>
+
+
 {% endblock navbar %}
 
 
@@ -58,7 +75,11 @@
         </div>
         <div class="card-body">
             <h5 class="card-title">Special title treatment</h5>
-            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+            {% for f in elements['feed'] %}
+                {% for i in f%}
+                    <p class="card-text">{{ i.id }}</p>
+                {% endfor %}
+            {% endfor %}
             <a href="#" class="btn btn-primary">Go somewhere</a>
         </div>
     </div>

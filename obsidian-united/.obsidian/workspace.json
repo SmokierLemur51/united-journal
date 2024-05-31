@@ -30,9 +30,21 @@
                 "source": false
               }
             }
+          },
+          {
+            "id": "89be74c47a500cc7",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "pricing/Pricing Buckets.md",
+                "mode": "source",
+                "source": false
+              }
+            }
           }
         ],
-        "currentTab": 1
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -98,7 +110,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "feature_planning/warehouse.md",
+                "file": "pricing/Pricing Buckets.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -115,7 +127,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "feature_planning/warehouse.md",
+                "file": "pricing/Pricing Buckets.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -138,7 +150,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "feature_planning/warehouse.md"
+                "file": "pricing/Pricing Buckets.md"
               }
             }
           }
@@ -159,10 +171,12 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "52a390291dec83f8",
+  "active": "ed57f1b3bcbf7fe9",
   "lastOpenFiles": [
-    "versions/version 0.0.1 - flask-alpha.md",
     "feature_planning/warehouse.md",
+    "pricing/Pricing Buckets.md",
+    "pricing",
+    "versions/version 0.0.1 - flask-alpha.md",
     "feature_planning",
     "What is United-Journal?.md",
     "__README__.md",

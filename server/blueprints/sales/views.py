@@ -5,7 +5,9 @@ from ...models.models import (
     ProductCategory,
 )
 
-sales = Blueprint('sales', __name__, template_folder="templates/sales", url_prefix="/sales")
+from ...utils.feed import filter_by_date
+
+sales = Blueprint('sales', __name__, template_folder="templates/sales", url_prefix="/")
 
 
 # from ...models.populate import populate_sub_categories 
@@ -15,16 +17,17 @@ def populate_with_test_data():
     return redirect(url_for('sales.vendors'))
 
 
-
-
 @sales.route("/")
 def home():
-    elements={'title': 'Sales'}
+    # General overview of current feed
+    elements={
+        'title': 'Sales',
+        # 'feed': filter_by_date(db, 
+        #     [
+        #         {"object": Vendor, "where": False},
+        #         {"object": ProductCategory, "where": False},
+        #     ]    
+        # ),
+    }
     return render_template('home.html', elements=elements)
 
-
-@sales.route("/vendors")
-def vendors():
-    elements = {'title': 'Vendors'}
-    return render_template('vendors.html', elements=elements,
-                vendors=db.session.scalars(db.select(Vendor)).all())

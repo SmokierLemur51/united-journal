@@ -25,7 +25,12 @@ def create_app(**config_overrides):
 	# register blueprints
 	from .blueprints.sales.views import sales
 	app.register_blueprint(sales)
-	
+	from .blueprints.orders.views import orders
+	app.register_blueprint(orders)
+	from .blueprints.purchasing.views import purchasing
+	app.register_blueprint(purchasing)
+
+
 	# create database tables
 	with app.app_context():
 		db.create_all()

@@ -30,9 +30,14 @@ def populate_guttercoil(db: SQLAlchemy) -> None:
     }
     for c in mastic_coils:
         insertions = [
-            Product(vendor_id=p["vendor"].id, category_id=p["category"].id, sub_category_id=p['five_inch'].id,
-                product=),
-
+            # Five inch coil 
+            Product(
+                vendor_id=p["vendor"].id, 
+                category_id=p["category"].id, 
+                sub_category_id=p['five_inch'].id,
+                product="",
+                ),
+            # 
         ]
         
         
