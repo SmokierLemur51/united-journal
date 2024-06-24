@@ -3,8 +3,11 @@ from flask_sqlalchemy import SQLAlchemy
 
 from sqlalchemy.exc import IntegrityError
 
-from .models import Vendor, ProductCategory, ProductSubCategory, Product
-from .queries import query_category_id_by_name
+from ..models import (
+    Vendor, ProductCategory, ProductSubCategory, Product,
+    Customer,
+)
+from ..queries import query_category_id_by_name
 
 
 def populate_vendors(db: SQLAlchemy) -> None:
@@ -247,3 +250,64 @@ def populate_gutter_coil(db: SQLAlchemy) -> None:
             except Exception as e:
                 print("\nError: \n{}\n{}\n\n".format(e, coil.color))
                 db.session.rollback()
+
+
+def populate_customers(db: SQLAlchemy) -> None:
+    customers = [
+        Customer(
+            company="All-Star Construction LLC",
+            street="123 Star Ave",
+            city="Louisville",
+            state="KY",
+            zip="40219",
+        ),
+        Customer(
+            company="Append Additions LLC",
+            street="432 Murray Ave",
+            city="Louisville",
+            state="Ky",
+            zip="40219",
+        ),
+        Customer(
+            company="Higginbotham Painting LLC",
+            street="123 Capitial St",
+            city="Corydon",
+            state="IN",
+            zip="47111",
+        ),
+        Customer(
+            company="Excellent Remodeling LLC",
+            street="90 Houston Blvd",
+            city="Louisville",
+            state="KY",
+            zip="40204",
+        ),
+        Customer(
+            company="Party Rock Gutters LLC",
+            street="78 Custom Blvd",
+            city="Louisville",
+            state="KY",
+            zip="40204",
+        ),
+        Customer(
+            company="Evolve Remodeling",
+            street="54 Calle Sol Ave",
+            city="Louisville",
+            state="KY",
+            zip="50303",
+        ),
+        Customer(
+            company="Bob The Builder",
+            street="92 Montana Ave",
+            city="Louisville",
+            state="KY",
+            zip="40424",
+        ),
+    ]
+    with current_app.app_context():
+        try:
+            db.session.add_all(customers)
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+            print(IntegrityError)

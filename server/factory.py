@@ -29,10 +29,12 @@ def create_app(**config_overrides):
 	app.register_blueprint(orders)
 	from .blueprints.purchasing.views import purchasing
 	app.register_blueprint(purchasing)
-
+	from .routes.crm import crm
+	app.register_blueprint(crm)
 
 	# create database tables
 	with app.app_context():
+		db.drop_all()
 		db.create_all()
 	
     # send that sucker to the moon	

@@ -208,11 +208,11 @@ class Warehouse(Base):
     codename: Mapped[str] = mapped_column(String(60), unique=True)
     street: Mapped[str] = mapped_column(String(120), nullable=False)
     street_2: Mapped[str] = mapped_column(String(120), nullable=True)
-    city: Mapped[str] = mapped_column(String(120, nullable=False))
+    city: Mapped[str] = mapped_column(String(120), nullable=False)
     state: Mapped[str] = mapped_column(String(120), nullable=False)
     zip_code: Mapped[str] = mapped_column(String(120), nullable=False)
 
-    locations: Mapped[List["WarehouseLocations"]] = relationship(back_populates="warehouse")
+    locations: Mapped[List["WarehouseLocation"]] = relationship(back_populates="warehouse")
 
     def __repr__(self) -> str:
         return "Warehouse -> {}".format(self.codename)
