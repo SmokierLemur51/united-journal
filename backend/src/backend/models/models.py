@@ -15,6 +15,42 @@ db = SQLAlchemy(model_class=Base)
 
 # Old Models, working on a restructure to fix some relationship bugs. 
 
+class Customer(Base):
+    __tablename__ = "customers"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    created_at: Mapped[datetime.datetime] = mapped_column(DateTime, default=func.now())
+    updated_at: Mapped[datetime.datetime] = mapped_column(DateTime, default=func.now())
+    deleted_at: Mapped[datetime.datetime] = mapped_column(DateTime, nullable=True)
+    company: Mapped[str] = mapped_column(String(120), unique=True)
+    street: Mapped[str] = mapped_column(String(200), unique=True)
+    street_2: Mapped[str] = mapped_column(String(200), nullable=True)
+    city: Mapped[str] = mapped_column(String(60))
+    state: Mapped[str] = mapped_column(String(25))
+    zip: Mapped[str] = mapped_column(String(10))
+    # relationships
+    contacts: Mapped[List["Contact"]] = relationship(back_populates="company")
+    orders: Mapped[List["Order"]] = relationship(back_populates="customer")
+
+    def __repr__(self) -> str:
+        return "{}".format(self.company)
+
+
+class Contact(Base):
+    __tablename__ = "contacts"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    company_id: Mapped[int] = mapped_column(ForeignKey("customers.id"))
+    name: Mapped[str] = mapped_column(String(100), nullable=False)
+    phone: Mapped[str] = mapped_column(String(100), nullable=False)
+    email: Mapped[str] = mapped_column(String(100), nullable=True)
+    # relationships
+    company: Mapped["Customer"] = relationship(back_populates="contacts")
+
+    def __repr__(self) -> str:
+        return "Name: {} Phone: ({})-{}-{}".format(self.name, self.phone[0:3], self.phone[3:6], self.phone[6:])
+
+
 class Vendor(Base):
     __tablename__ = "vendors"
 
@@ -32,53 +68,12 @@ class Vendor(Base):
         return "{}".format(self.vendor)
 
 
-class Customer(Base):
-    __tablename__ = "customers"
-
-    id: Mapped[int] = mapped_column(primary_key=True)
-    created_at: Mapped[datetime.datetime] = mapped_column(DateTime, default=func.now())
-    updated_at: Mapped[datetime.datetime] = mapped_column(DateTime, default=func.now())
-    deleted_at: Mapped[datetime.datetime] = mapped_column(DateTime, nullable=True)
-    company: Mapped[str] = mapped_column(String(120), unique=True)
-    street: Mapped[str] = mapped_column(String(200), unique=True)
-    street_2: Mapped[str] = mapped_column(String(200), nullable=True)
-    city: Mapped[str] = mapped_column(String(60))
-    state: Mapped[str] = mapped_column(String(25))
-    zip: Mapped[str] = mapped_column(String(10))
-
-    contacts: Mapped[List["CustomerContact"]] = relationship(back_populates="company")
-    orders: Mapped[List["Order"]] = relationship(back_populates="customer")
-
-    def __repr__(self) -> str:
-        return "{}".format(self.company)
-
-
-class CustomerContact(Base):
-    __tablename__ = "customer_contacts"
-
-    id: Mapped[int] = mapped_column(primary_key=True)
-    product: Mapped[str] = mapped_column(String(80))
-    created_at: Mapped[datetime.datetime] = mapped_column(DateTime, default=func.now())
-    updated_at: Mapped[datetime.datetime] = mapped_column(DateTime, default=func.now())
-    deleted_at: Mapped[datetime.datetime] = mapped_column(DateTime, nullable=True)
-    company_id: Mapped[int] = mapped_column(ForeignKey("customers.id"))
-    name: Mapped[str] = mapped_column(String(100), nullable=False)
-    phone: Mapped[str] = mapped_column(String(100), nullable=False)
-    email: Mapped[str] = mapped_column(String(100), nullable=True)
-
-    company: Mapped["Customer"] = relationship(back_populates="contacts")
-
-    def __repr__(self) -> str:
-        return "Name: {} Phone: ({})-{}-{}".format(self.name, self.phone[0:3], self.phone[3:6], self.phone[6:])
-
-
 class ProductCategory(Base):
     __tablename__: str = "product_categories"
 
     id: Mapped[int] = mapped_column(primary_key=True)
     category: Mapped[str] = mapped_column(String(120), unique=True)
     info: Mapped[str] = mapped_column(String(500), nullable=True)
-
     # relationships
     products: Mapped[List["Product"]] = relationship(back_populates='category')
     sub_categories: Mapped[List["ProductSubCategory"]] = relationship(back_populates="parent_category")
@@ -123,8 +118,8 @@ class Product(Base):
 
     # relationships
     vendor: Mapped['Vendor'] = relationship(back_populates="products")
-    category: Mapped['ProductCategory'] = relationship(back_populates='products')
-    sub_category: Mapped['ProductCategory'] = relationship(back_populates='products')
+    category: Mapped['ProductCategory'] = relationship(back_populates='products', overlaps='sub_category')
+    sub_category: Mapped['ProductCategory'] = relationship(back_populates='products', overlaps='category')
 
 
 class PricingBucket(Base):
@@ -211,7 +206,7 @@ class Warehouse(Base):
     city: Mapped[str] = mapped_column(String(120), nullable=False)
     state: Mapped[str] = mapped_column(String(120), nullable=False)
     zip_code: Mapped[str] = mapped_column(String(120), nullable=False)
-
+    # relationships
     locations: Mapped[List["WarehouseLocation"]] = relationship(back_populates="warehouse")
 
     def __repr__(self) -> str:
@@ -224,7 +219,7 @@ class WarehouseLocation(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     warehouse_id: Mapped[int] = mapped_column(ForeignKey("warehouses.id"))
     location: Mapped[str] = mapped_column(String(120), unique=True)
-
+    # relationships
     warehouse: Mapped["Warehouse"] = relationship(back_populates="locations")
 
     def __repr__(self) -> str:
@@ -241,7 +236,7 @@ class InventoryItem(Base):
     product_id: Mapped[int]
     reserved_status: Mapped[bool] = mapped_column(Boolean, default=False)
     reserved_on: Mapped[int] = mapped_column(ForeignKey("orders.id"))
-
+    # relationships
     reserved_for: Mapped["Order"] = relationship(back_populates="")
 
 

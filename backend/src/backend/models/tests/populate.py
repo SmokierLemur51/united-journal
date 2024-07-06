@@ -5,9 +5,10 @@ from sqlalchemy.exc import IntegrityError
 
 from ..models import (
     Vendor, ProductCategory, ProductSubCategory, Product,
-    Customer,
+    Customer, Contact,
 )
 from ..queries import query_category_id_by_name
+from .util import random_customer
 
 
 def populate_vendors(db: SQLAlchemy) -> None:
@@ -43,8 +44,6 @@ def populate_vendors(db: SQLAlchemy) -> None:
             db.session.rollback()
 
 
-
-
 def populate_categories(db: SQLAlchemy) -> None:
     # me being lazy again
     parent = "Parent category for"
@@ -73,7 +72,6 @@ def populate_categories(db: SQLAlchemy) -> None:
         except Exception as e:
             print(e)
             db.session.rollback()
-
 
 
 def populate_sub_categories(db: SQLAlchemy) -> None:
@@ -230,7 +228,6 @@ def populate_sub_categories(db: SQLAlchemy) -> None:
             db.session.rollback()
 
 
-
 def populate_gutter_coil(db: SQLAlchemy) -> None:
     colors = [
         "30 deg white","almond", "black", "cameo", "charcoal grey",
@@ -303,6 +300,34 @@ def populate_customers(db: SQLAlchemy) -> None:
             state="KY",
             zip="40424",
         ),
+        Customer(
+            company="Star Construction", 
+            street="120 W Main St",
+            city="Louisville",
+            state="KY", zip="40123",
+        ),
+        Customer(
+            company="Extreme Restorations", 
+            street="100 N Second St",
+            city="Louisville",
+            state="KY", zip="40214",
+        ),
+        Customer(
+            company="Impressive Improvements Inc", 
+            street="2 Logan St",
+            city="Louisville",
+            state="KY", zip="40214",
+        ),
+        Customer(
+            company="Professional Handyman Services", 
+            street="98 Bell Ave",
+            city="Louisville", state="KY", zip="40122",
+        ),
+        Customer(
+            company="Average Joe's Roofers", 
+            street="16 Defeat St",
+            city="Louisville", state="KY", zip="40152",
+        ),
     ]
     with current_app.app_context():
         try:
@@ -311,3 +336,147 @@ def populate_customers(db: SQLAlchemy) -> None:
         except IntegrityError:
             db.session.rollback()
             print(IntegrityError)
+
+
+def populate_contacts(db: SQLAlchemy) -> None:
+    customers = db.session.scalars(db.select(Customer)).all()
+    contacts = [
+        Contact(
+            company_id=random_customer(customers).id,
+            name="Mark",
+            phone="1921942342",
+            email="mark@mark.com",
+        ),
+        Contact(
+            company_id=random_customer(customers).id,
+            name="Steve",
+            phone="1031238945",
+            email="steve@gmail.com",
+        ),
+        Contact(
+            company_id=random_customer(customers).id,
+            name="Darrin",
+            phone="7891236745",
+            email="darrin@gmail.com",
+        ),
+        Contact(
+            company_id=random_customer(customers).id,
+            name="Sam",
+            phone="0987654564",
+            email="sam@test.com",
+        ),
+        Contact(
+            company_id=random_customer(customers).id,
+            name="Carl",
+            phone="8764538979",
+            email="carl@test.com",
+        ),
+        Contact(
+            company_id=random_customer(customers).id,
+            name="Javier",
+            phone="8760348765",
+            email="javier@test.com",
+        ),
+        Contact(
+            company_id=random_customer(customers).id,
+            name="Heine",
+            phone="4563452637",
+            email="heine@test.com",
+        ),
+        Contact(
+            company_id=random_customer(customers).id,
+            name="Marinara",
+            phone="1029384756",
+            email="marinara@test.com",
+        ),
+        Contact(
+            company_id=random_customer(customers).id,
+            name="Scandra",
+            phone="8749998888",
+            email="scandra@test.com",
+        ),
+        Contact(
+            company_id=random_customer(customers).id,
+            name="Cal",
+            phone="6751238576",
+            email="cal@test.com",
+        ),
+        Contact(
+            company_id=random_customer(customers).id,
+            name="Estrella",
+            phone="6567677666",
+            email="estrella@test.com",
+        ),
+        Contact(
+            company_id=random_customer(customers).id,
+            name="Colton",
+            phone="1237894567",
+            email="colton@test.com",
+        ),
+        Contact(
+            company_id=random_customer(customers).id,
+            name="Merl",
+            phone="7825673456",
+            email="merl@test.com",
+        ),
+        Contact(
+            company_id=random_customer(customers).id,
+            name="Bart",
+            phone="34232143333",
+            email="bart@gmail.com",
+        ),
+        Contact(
+            company_id=random_customer(customers).id,
+            name="Bertha",
+            phone="0001119999",
+            email="bertha@test.com",
+        ),
+        Contact(
+            company_id=random_customer(customers).id,
+            name="Martha",
+            phone="8883337777",
+            email="martha@test.com",
+        ),
+        Contact(
+            company_id=random_customer(customers).id,
+            name="Samuela",
+            phone="8889990000",
+            email="samuela@test.com",
+        ),
+        Contact(
+            company_id=random_customer(customers).id,
+            name="Tabatha",
+            phone="7776664848",
+            email="tabatha@test.com",
+        ),
+        Contact(
+            company_id=random_customer(customers).id,
+            name="Elroy",
+            phone="4443332222",
+            email="elroy@test.com",
+        ),
+        Contact(
+            company_id=random_customer(customers).id,
+            name="Fairis",
+            phone="0007891234",
+            email="fairis@test.com",
+        ),
+    ]
+    with current_app.app_context():
+        try:
+            db.session.add_all(contacts)
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+            print(IntegrityError)
+
+
+
+""" Nothing below """
+def populate_all(db: SQLAlchemy) -> None:
+    populate_vendors(db)
+    populate_categories(db)
+    populate_sub_categories(db)
+    # populate_gutter_coil(db)
+    populate_customers(db)
+    populate_contacts(db)

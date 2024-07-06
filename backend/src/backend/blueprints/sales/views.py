@@ -7,7 +7,7 @@ from ...models.models import (
 
 from ...utils.feed import filter_by_date
 
-sales = Blueprint('sales', __name__, template_folder="templates/sales", url_prefix="/")
+sales = Blueprint('sales', __name__, template_folder="templates/sales", url_prefix="/sales")
 
 
 # from ...models.populate import populate_sub_categories 
