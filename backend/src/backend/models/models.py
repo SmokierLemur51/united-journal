@@ -28,12 +28,16 @@ class Customer(Base):
     city: Mapped[str] = mapped_column(String(60))
     state: Mapped[str] = mapped_column(String(25))
     zip: Mapped[str] = mapped_column(String(10))
+    lifetime_spent: Mapped[float] = mapped_column(Float, default=0.0)
+    ytd_spent: Mapped[float] = mapped_column(Float, default=0.0)
     # relationships
     contacts: Mapped[List["Contact"]] = relationship(back_populates="company")
     orders: Mapped[List["Order"]] = relationship(back_populates="customer")
 
     def __repr__(self) -> str:
         return "{}".format(self.company)
+
+    
 
 
 class Contact(Base):

@@ -33,10 +33,9 @@ def create_app(**config_overrides):
 	from .blueprints.purchasing.views import purchasing
 	app.register_blueprint(purchasing)
 	
-
 	# create database tables
 	with app.app_context():
-		# db.drop_all()
+		db.drop_all()
 		db.create_all()
 	
     # send that sucker to the moon	

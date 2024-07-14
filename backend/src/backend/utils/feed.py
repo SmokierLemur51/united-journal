@@ -3,7 +3,10 @@ models/feed.py
 
 Funtions to populate the feed.html page 
 """
+from typing import List
 from flask_sqlalchemy import SQLAlchemy
+
+from ..models.models import Customer
 
 
 """ Creating this in mind that the main feed will have many different 
@@ -26,6 +29,13 @@ def filter_by_date(db: SQLAlchemy, dataset: list) -> list:
             filtered_list.append(db.session.scalars(db.select(data["object"])).all())
     # filtered list is now list[list[objects]]
     return filtered_list
-        
+
+
 def populate_dataset():
     pass
+
+
+def top_customers_feed(db: SQLAlchemy) -> List[Customer]:
+    customers = db.session.scalars(db.select(Customer)).all()
+    # customers.sort(key=lambda Customer, Customer.ytd_spent)
+    return []

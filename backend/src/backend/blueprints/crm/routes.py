@@ -1,5 +1,7 @@
 from flask import Blueprint, current_app, render_template, redirect, url_for
 
+from . import queries
+
 from ...models.models import db
 from ...models.models import Customer, Contact
 
@@ -22,8 +24,8 @@ def insert():
 
 @crm.route("/list-contacts")
 def list_contacts():
-    customers = db.session.scalars(db.select(Customer)).all()
-    contacts = db.session.scalars(db.select(Contact)).all()
+    customers = queries.customers(db)
+    contacts = queries.contacts(db)
     for customer in customers:
         print("\n\n{}".format(customer.company))
         for contact in contacts:
@@ -35,9 +37,10 @@ def list_contacts():
 """ CRM Routes """
 @crm.route("/")
 def home():
-    print('home route')
+    
     elements = {
         'title': 'United-Journal',
+        'top_customers': None,
     }
     return render_template('home.html', elements=elements)
 
@@ -46,9 +49,13 @@ def home():
 def customers():
     elements = {
         'title': 'Customers',
-        'customers': db.session.scalars(db.select(Customer)).all(), # default customers sorted by ytd-spent  
     }
-    return render_template('customers.html', elements=elements)
+    return render_template('customers.html', elements=elements, customers=queries.customers(db))
+
+
+@crm.route("/customers/create-customer")
+def create_customer():
+    pass
 
 
 @crm.route("/feed")
