@@ -13,7 +13,22 @@ class Base(DeclarativeBase):
 db = SQLAlchemy(model_class=Base)
 
 
-# Old Models, working on a restructure to fix some relationship bugs. 
+# Old Models, working on a restructure to fix some relationship bugs.
+
+class Address(Base):
+    __tablename__ = "addresses"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    street: Mapped[str] = mapped_column(String(200), unique=True)
+    street_2: Mapped[str] = mapped_column(String(200), nullable=True)
+    city: Mapped[str] = mapped_column(String(60))
+    state: Mapped[str] = mapped_column(String(25))
+    zip: Mapped[str] = mapped_column(String(10))
+
+    customers: Mapped[List["Customer"]] = relationship(back_populates='address')
+
+    def __repr__(self) -> str:
+        return self.street
+
 
 class Customer(Base):
     __tablename__ = "customers"
@@ -23,21 +38,35 @@ class Customer(Base):
     updated_at: Mapped[datetime.datetime] = mapped_column(DateTime, default=func.now())
     deleted_at: Mapped[datetime.datetime] = mapped_column(DateTime, nullable=True)
     company: Mapped[str] = mapped_column(String(120), unique=True)
-    street: Mapped[str] = mapped_column(String(200), unique=True)
-    street_2: Mapped[str] = mapped_column(String(200), nullable=True)
-    city: Mapped[str] = mapped_column(String(60))
-    state: Mapped[str] = mapped_column(String(25))
-    zip: Mapped[str] = mapped_column(String(10))
+    address_id: Mapped[int] = mapped_column(ForeignKey('addresses.id')) 
     lifetime_spent: Mapped[float] = mapped_column(Float, default=0.0)
     ytd_spent: Mapped[float] = mapped_column(Float, default=0.0)
+    average_daily_spent: Mapped[float] = mapped_column(Float, default=0.0)
     # relationships
+    address: Mapped["Address"] = relationship(back_populates='customers')
     contacts: Mapped[List["Contact"]] = relationship(back_populates="company")
     orders: Mapped[List["Order"]] = relationship(back_populates="customer")
+    notes: Mapped[List["CustomerNote"]] = relationship(back_populates='customer')
 
     def __repr__(self) -> str:
         return "{}".format(self.company)
 
-    
+
+class CustomerNote(Base):
+    __tablename__ = "customer_notes"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    created_at: Mapped[datetime.datetime] = mapped_column(DateTime, default=func.now())
+    updated_at: Mapped[datetime.datetime] = mapped_column(DateTime, default=func.now())
+    deleted_at: Mapped[datetime.datetime] = mapped_column(DateTime, nullable=True)
+    customer_id: Mapped[int] = mapped_column(ForeignKey('customers.id'))
+    title: Mapped[str] = mapped_column(String(120))
+    content: Mapped[str] = mapped_column(String(2500), nullable=True)
+
+    customer: Mapped["Customer"] = relationship(back_populates='notes')
+
+    def __repr__(self) -> str:
+        return self.title
+
 
 
 class Contact(Base):
@@ -262,4 +291,16 @@ class TestInventoryItem(Base):
 
     def update_reservations(self, **kwargs) -> None:
         pass
+
+
+class Checklist(Base):
+    __tablename__ = "checklists"
+    id: Mapped[int] = mapped_column(primary_key=True)
+
+
+class ChecklistItem(Base):
+    __tablename__ = "checklist_items"
+    id: Mapped[int] = mapped_column(primary_key=True)
+
+
 
