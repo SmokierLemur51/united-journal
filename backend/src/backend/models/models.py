@@ -9,7 +9,7 @@ from sqlalchemy.sql import func
 class Base(DeclarativeBase):
     pass
 
-
+# https://github.com/robputt/quart-starter
 db = SQLAlchemy()
 
 
