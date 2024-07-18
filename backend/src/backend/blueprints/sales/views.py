@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, render_template, url_for
+from quart import Blueprint, redirect, render_template, url_for
 from ...models.models import db 
 from ...models.models import (
     Vendor,
@@ -12,13 +12,13 @@ sales = Blueprint('sales', __name__, template_folder="templates/sales", url_pref
 
 # from ...models.populate import populate_sub_categories 
 @sales.route("/testing/populate-tables")
-def populate_with_test_data():
+async def populate_with_test_data():
     # populate_sub_categories(db)
-    return redirect(url_for('sales.vendors'))
+    return await redirect(url_for('sales.vendors'))
 
 
 @sales.route("/")
-def home():
+async def home():
     # General overview of current feed
     elements={
         'title': 'Sales',
@@ -29,5 +29,5 @@ def home():
         #     ]    
         # ),
     }
-    return render_template('home.html', elements=elements)
+    return await render_template('home.html', elements=elements)
 

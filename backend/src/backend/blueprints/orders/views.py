@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, render_template, url_for
+from quart import Blueprint, redirect, render_template, url_for
 from ...models.models import db 
 from ...models.models import (
     Vendor,
@@ -10,13 +10,13 @@ orders = Blueprint('orders', __name__, template_folder="templates/orders", url_p
 
 # from ...models.populate import populate_sub_categories 
 @orders.route("/")
-def index():
+async def index():
     elements = {}
-    return render_template("index.html", elements=elements)
+    return await render_template("index.html", elements=elements)
 
 
 @orders.route("/create")
-def create():
+async def create():
     elements = {}
-    return render_template("create.html", elements=elements)
+    return await render_template("create.html", elements=elements)
 

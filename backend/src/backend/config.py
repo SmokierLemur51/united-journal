@@ -15,7 +15,7 @@ class Config(object):
             os.environ['DATABASE_NAME'],
         )
     """
-    SQLALCHEMY_DATABASE_URI="sqlite:///{}.db".format(os.environ['SQLITE_DB_FILE'])
+    SQLALCHEMY_DATABASE_URI="sqlite+aiosqlite:///{}.db".format(os.environ['SQLITE_DB_FILE'])
 
 
 class ProductionConfig(Config):

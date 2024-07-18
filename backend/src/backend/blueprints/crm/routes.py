@@ -1,4 +1,4 @@
-from flask import Blueprint, current_app, render_template, redirect, url_for
+from quart import Blueprint, current_app, render_template, redirect, url_for
 
 from . import queries
 
@@ -15,7 +15,7 @@ crm = Blueprint(
 from ...models.tests.populate import populate_customers, populate_contacts
 
 @crm.route("/insert")
-def insert():
+async def insert():
     with current_app.app_context():
         populate_customers(db)
         populate_contacts(db)
@@ -23,7 +23,7 @@ def insert():
 
 
 @crm.route("/list-contacts")
-def list_contacts():
+async def list_contacts():
     customers = queries.customers(db)
     contacts = queries.contacts(db)
     for customer in customers:
@@ -36,38 +36,38 @@ def list_contacts():
 
 """ CRM Routes """
 @crm.route("/")
-def home():
+async def home():
     
     elements = {
         'title': 'United-Journal',
         'top_customers': None,
     }
-    return render_template('home.html', elements=elements)
+    return await render_template('home.html', elements=elements)
 
 
 @crm.route("/customers")
-def customers():
+async def customers():
     elements = {
         'title': 'Customers',
     }
-    return render_template('customers.html', elements=elements, customers=queries.customers(db))
+    return await render_template('customers.html', elements=elements, customers=queries.customers(db))
 
 
 @crm.route("/customers/create-customer")
-def create_customer():
+async def create_customer():
     pass
 
 
 @crm.route("/feed")
-def feed():
-    return render_template('feed.html')
+async def feed():
+    return await render_template('feed.html')
 
 
 @crm.route('/customer-inquiry')
-def customer_inquiry():
-    return render_template('customer_inquiry.html')
+async def customer_inquiry():
+    return await render_template('customer_inquiry.html')
 
 
 @crm.route('/new_customer')
-def new_customer():
-    return render_template('new_customer.html')
+async def new_customer():
+    return await render_template('new_customer.html')

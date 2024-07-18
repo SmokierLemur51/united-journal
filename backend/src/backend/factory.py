@@ -1,12 +1,12 @@
 from dotenv import load_dotenv
-from flask import Flask
+from quart import Quart
 
 
 load_dotenv()
 
 
 def create_app(**config_overrides):
-	app = Flask(__name__, static_url_path='/static')
+	app = Quart(__name__, static_url_path='/static')
 	
 	# env config
 	app.config.from_pyfile("settings.py")
