@@ -24,8 +24,7 @@ class Address(Base):
     state: Mapped[str] = mapped_column(String(25))
     zip: Mapped[str] = mapped_column(String(10))
 
-    customers: Mapped[List["Customer"]] = relationship(back_populates='address')
-
+    
     def __repr__(self) -> str:
         return self.street
 
@@ -38,12 +37,16 @@ class Customer(Base):
     updated_at: Mapped[datetime.datetime] = mapped_column(DateTime, default=func.now())
     deleted_at: Mapped[datetime.datetime] = mapped_column(DateTime, nullable=True)
     company: Mapped[str] = mapped_column(String(120), unique=True)
-    address_id: Mapped[int] = mapped_column(ForeignKey('addresses.id')) 
+    street: Mapped[str] = mapped_column(String(200), unique=True)
+    street_2: Mapped[str] = mapped_column(String(200), nullable=True)
+    city: Mapped[str] = mapped_column(String(60))
+    state: Mapped[str] = mapped_column(String(25))
+    zip: Mapped[str] = mapped_column(String(10))
     lifetime_spent: Mapped[float] = mapped_column(Float, default=0.0)
     ytd_spent: Mapped[float] = mapped_column(Float, default=0.0)
     average_daily_spent: Mapped[float] = mapped_column(Float, default=0.0)
-    # relationships
-    address: Mapped["Address"] = relationship(back_populates='customers')
+    # relationship
+  
     contacts: Mapped[List["Contact"]] = relationship(back_populates="company")
     orders: Mapped[List["Order"]] = relationship(back_populates="customer")
     notes: Mapped[List["CustomerNote"]] = relationship(back_populates='customer')
