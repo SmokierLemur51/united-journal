@@ -1,0 +1,26 @@
+
+Required Models
+
+**Journals**
+-Tasks
+-ToDos
+-Checklists
+
+
+**Customer Related***
+-Customer
+-CustomerContactPoints
+-CustomerNotes
+-CustomerOrderTemplates
+-CustomerShipTos
+-PricingGroups
+
+
+**Products**
+-ProductUOM UnitsOfMeasurements
+-CommonProductAssociations
+-
+
+
+
+**Reports**
