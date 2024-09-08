@@ -306,4 +306,19 @@ class ChecklistItem(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
 
 
+class ReminderType(Base):
+    __tablename__ = "reminder_types"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(120), unique=True)
+    info: Mapped[str] = mapped_column(String(500), nullable=True)
+
+    def __repr__(self) -> str:
+        return self.name 
+
+
+class Reminder(Base):
+    __tablename__ = "reminders"
+    id: Mapped[int] = mapped_column(primary_key=True)
+
+
 
